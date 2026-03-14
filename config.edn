@@ -13,6 +13,7 @@
    (allow file-write* (subpath "/dev"))
    (allow file-write* (subpath "/private/tmp"))
    (allow file-write* (subpath "/var/folders"))
+   (allow file-write* (subpath "/private/var/folders"))
    (allow file-write* (subpath "~/"))]
 
   :process-exec
