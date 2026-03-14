@@ -1,0 +1,10 @@
+# Editor / Tool caches
+.clj-kondo/.cache/
+.clj-kondo/imports/
+.lsp/
+
+# OS
+.DS_Store
+
+# Babashka
+.nrepl-port

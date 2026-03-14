@@ -1,0 +1,89 @@
+{;; =====================================================================
+ ;; Sandbox SBPL テンプレート
+ ;; "~/" → ホームディレクトリに展開 / :worktree → worktree パスに置換
+ ;; =====================================================================
+
+ :sandbox
+ {:header
+  [(version 1)
+   (allow default)]
+
+  :file-write
+  [(deny file-write*)
+   (allow file-write* (subpath "/dev"))
+   (allow file-write* (subpath "/private/tmp"))
+   (allow file-write* (subpath "/var/folders"))
+   (allow file-write* (subpath "~/"))]
+
+  :process-exec
+  [(deny process-exec)
+   (allow process-exec (subpath :worktree))
+   (deny process-exec (literal "/usr/bin/curl"))
+   (deny process-exec (literal "/usr/bin/wget"))
+   (deny process-exec (literal "/opt/homebrew/bin/curl"))
+   (deny process-exec (literal "/opt/homebrew/bin/wget"))]
+
+  ;; --no-network 時のみ挿入
+  :network-deny
+  [(deny network-outbound)
+   (deny network-bind)]}
+
+ ;; =====================================================================
+ ;; パス設定（subpath ベース）
+ ;; 存在しないパスは自動スキップ
+ ;; =====================================================================
+
+ :deny-read-paths
+ ["~/.ssh"
+  "~/.aws"
+  "~/.gnupg"
+  "~/.config/op"
+  "~/Library/Safari"
+  "~/Library/Messages"
+  "~/Library/Mail"
+  "~/Library/Cookies"]
+
+ :deny-write-paths
+ ["~/.ssh"
+  "~/.aws"
+  "~/.gnupg"
+  "~/.password-store"
+  "~/Library/Safari"
+  "~/Library/Messages"
+  "~/Library/Mail"
+  "~/Library/Cookies"
+  "~/Desktop"
+  "~/Documents"
+  "~/Downloads"
+  "~/Pictures"
+  "~/Music"
+  "~/Movies"]
+
+ :allow-exec-paths
+ ["/usr"
+  "/bin"
+  "/sbin"
+  "/opt/homebrew"
+  "~/.nvm"
+  "~/.pyenv"
+  "~/.rbenv"]
+
+ ;; =====================================================================
+ ;; ファイルパターン制限（SBPL regex で出力）
+ ;; SBPL の正規表現構文で記述（バックスラッシュは \\ でエスケープ）
+ ;; =====================================================================
+
+ ;; deny file-read* に変換されるパターン
+ :deny-read-patterns
+ ["\\.env$"
+  "\\.env\\."
+  "\\.tfvars$"
+  "/id_rsa$"
+  "/id_ed25519$"
+  "/id_ecdsa$"]
+
+ ;; deny-read-patterns にマッチしても許可するパターン
+ :allow-read-patterns
+ ["\\.env\\.example$"
+  "\\.env\\.sample$"
+  "\\.env\\.template$"]}
