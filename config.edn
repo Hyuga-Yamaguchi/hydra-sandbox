@@ -87,4 +87,5 @@
  :allow-read-patterns
  ["\\.env\\.example$"
   "\\.env\\.sample$"
-  "\\.env\\.template$"]}
+  "\\.env\\.template$"
+  "/\\.ssh/known_hosts$"]}
