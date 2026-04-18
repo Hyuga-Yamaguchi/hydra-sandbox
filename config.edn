@@ -22,7 +22,8 @@
    (deny process-exec (literal "/usr/bin/curl"))
    (deny process-exec (literal "/usr/bin/wget"))
    (deny process-exec (literal "/opt/homebrew/bin/curl"))
-   (deny process-exec (literal "/opt/homebrew/bin/wget"))]
+   (deny process-exec (literal "/opt/homebrew/bin/wget"))
+   (deny process-exec (literal "/usr/bin/sudo"))]
 
   ;; --no-network 時のみ挿入
   :network-deny
@@ -83,9 +84,20 @@
   "/id_ed25519$"
   "/id_ecdsa$"]
 
+ ;; deny file-write* に変換されるパターン
+ :deny-write-patterns
+ ["\\.env$"
+  "\\.env\\."
+  "\\.tfvars$"]
+
  ;; deny-read-patterns にマッチしても許可するパターン
  :allow-read-patterns
  ["\\.env\\.example$"
   "\\.env\\.sample$"
   "\\.env\\.template$"
-  "/\\.ssh/known_hosts$"]}
+  "/\\.ssh/known_hosts$"
+  "/\\.ssh/config$"]
+
+ ;; deny-write-paths にマッチしても許可するパターン
+ :allow-write-patterns
+ ["/\\.ssh/known_hosts$"]}

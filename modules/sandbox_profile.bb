@@ -56,6 +56,10 @@
           (:deny-read-patterns config))
      (map #(str "(allow file-read* (regex #\"" % "\"))")
           (:allow-read-patterns config))
+     (map #(str "(deny file-write* (regex #\"" % "\"))")
+          (:deny-write-patterns config))
+     (map #(str "(allow file-write* (regex #\"" % "\"))")
+          (:allow-write-patterns config))
      (when no-network?
        (map resolve (:network-deny sandbox))))))
 
